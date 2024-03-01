@@ -44,6 +44,7 @@ local function set_transparent_bg(transparent)
  end
 end
 
+
 ---@param extra_commands string[]
 local function apply_extra_commands(extra_commands)
   extra_commands = extra_commands or {}
@@ -53,31 +54,19 @@ local function apply_extra_commands(extra_commands)
 end
 
 
-M.get_current_colorscheme = function()
-  if vim.g.colors_name then
-    return vim.g.colors_name
-  else
-    return "default" -- ??????  
-  end
-end
-
----@param individual table
----@param colorscheme string
-M.is_colorscheme_in_individual = function(individual, colorscheme)
-  for _, v in ipairs(individual) do
-    if (v.name == colorscheme) then
-      return true
-    end
-  end
-  return false
-end
-
 M.apply_opts = function(opts)
   opts = opts or {}
 
-  set_bg_type(opts.bg_type)
-  set_transparent_bg(opts.transparent)
-  apply_extra_commands(opts.extra_commands)
+  -- Does the if statements make a difference?
+  if opts.bg_type ~= nil then
+    set_bg_type(opts.bg_type)
+  end
+  if opts.transparent ~= nil then
+    set_transparent_bg(opts.transparent)
+  end
+  if opts.extra_commands ~= nil then
+    apply_extra_commands(opts.extra_commands)
+  end
 
   if type(opts.extra_func) == "function" then
     opts.extra_func()

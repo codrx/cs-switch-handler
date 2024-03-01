@@ -1,5 +1,4 @@
 
-local U = require("cs-switch-handler.utils")
 
 M = {}
 
@@ -34,8 +33,10 @@ M.load_colorscheme = function(default, file_path, use_req)
     -- if file_path == "default" then
     --   file_path = U.default_file_path
     -- end
-    if use_req and source_saved_colorscheme_require(file_path) then
-       return
+    if use_req then
+      if source_saved_colorscheme_require(file_path) then
+         return
+      end
     elseif source_saved_colorscheme_vim(file_path) then
       return
     else
@@ -48,6 +49,7 @@ M.load_colorscheme = function(default, file_path, use_req)
   end
 
   if default.name ~= nil then
+    local U = require("cs-switch-handler.utils")
     vim.cmd("colorscheme "..default.name)
     U.apply_opts(default)
   end

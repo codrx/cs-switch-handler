@@ -1,8 +1,8 @@
 
-local U = require("cs-switch-handler.utils")
 local VC = require("cs-switch-handler.vim_commands")
 
 local M = {}
+
 
 ---@param xs string: (xs:x) from haskell.. couldn't think of anything better
 ---@param x string 
@@ -45,16 +45,27 @@ local function add_extra_commands_to_file(extra_commands, file_contents)
   return file_contents
 end
 
+---@param individual table
+---@param colorscheme string
+M.is_colorscheme_in_individual = function(individual, colorscheme)
+  for _, v in ipairs(individual) do
+    if (v.name == colorscheme) then
+      return true
+    end
+  end
+  return false
+end
+
 
 ---@param opts table
 ---@return string
 M.colorscheme_opts_to_file = function(opts)
-  local colorscheme = U.get_current_colorscheme()
+  local colorscheme = vim.g.colors_name
 
   local file_contents = "colorscheme ".. colorscheme
 
   local table
-  if U.is_colorscheme_in_individual(opts, colorscheme) then
+  if M.is_colorscheme_in_individual(opts, colorscheme) then
     table = opts.individual
   else
     table = opts.all
@@ -93,6 +104,7 @@ M.save_colorscheme = function(opts, file_path)
     print("Please supply a save file path in setup")
   end
 end
+
 
 return M
 
